@@ -1,13 +1,15 @@
 {
   "expo": {
-    "name": "confusion",
-    "slug": "confusion",
+    "name": "covid-19",
+    "slug": "covid-19",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/corona.png",
       "resizeMode": "contain",
+      "width":"20",
+      "height":"20",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -21,6 +23,9 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "android": {
+      "package": "com.shashwatsahu25.covid_19"
     }
   }
 }
