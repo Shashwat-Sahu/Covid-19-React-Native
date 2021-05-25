@@ -8,19 +8,22 @@ import {
 import { ProgressChart } from 'react-native-chart-kit'
 
 const State = () => {
+  const [data,setData] = useState({})
   const [state, stateData] = useState([]);
   const [selectedstate, setselectedstate] = useState({})
   const [districtwise, setdistrictwise] = useState([])
   const [districtwisestate, setdistrictwisestate] = useState([])
   const [date,setDate] = useState("");
-  useEffect(() => {
-    fetch('https://api.covidindiatracker.com/state_data.json').then(res => res.json()).then(data => {
-      stateData(data);
-    }).catch(err => console.log(err))
-  }, [])
+  // useEffect(() => {
+  //   fetch('https://api.covidindiatracker.com/state_data.json').then(res => res.json()).then(data => {
+  //     stateData(data);
+  //   }).catch(err => console.log(err))
+  // }, [])
   useEffect(() => {
     fetch('https://api.covid19india.org/state_district_wise.json').then(res => res.json()).then(data => {
-      setdistrictwise(data)
+      console.log(Object.keys(data));
+      stateData(Object.keys(data))
+      setData(data)
     }).catch(err => console.log(err))
   }, [])
 
@@ -33,13 +36,34 @@ const State = () => {
   },[])
   const onValueChange = (value) => {
 
-    setselectedstate(value)
-    var distname = []
-    Object.keys(districtwise[value.state].districtData).forEach(element => {
-      var res = { "name": element, "data": districtwise[value.state].districtData[element] }
-      distname.push(res)
-    });
-    setdistrictwisestate(distname)
+    // setselectedstate(value)
+    // var distname = []
+    // Object.keys(districtwise[value.state].districtData).forEach(element => {
+    //   var res = { "name": element, "data": districtwise[value.state].districtData[element] }
+    //   distname.push(res)
+    // });
+    // setdistrictwisestate(distname)
+    var districtwise = [],active=0,confirmed=0,deceased=0;
+    Object.keys(data[value].districtData).forEach(district=>{
+      
+      districtwise=[...districtwise,{
+        district:district,
+        active:data[value].districtData[district].active,
+        confirmed:data[value].districtData[district].confirmed,
+        deceased:data[value].districtData[district].deceased
+      }
+    ]
+    active+=data[value].districtData[district].active
+    confirmed+=data[value].districtData[district].confirmed
+    deceased+=data[value].districtData[district].deceased
+    })
+    setselectedstate({
+      state:value,
+      active,
+      confirmed,
+      deceased,
+      districtwise
+    })
   }
   return (<Container style={{ backgroundColor: "black" }}>
     <Content>
@@ -60,7 +84,7 @@ const State = () => {
                   state.map(item => {
 
                     return (
-                      <Picker.Item label={item.state} value={item} key={item.id} />
+                      <Picker.Item label={item} value={item} key={item.id} />
                     )
                   })
                 }
@@ -70,7 +94,7 @@ const State = () => {
         </Row>
         <Row>
           <Col style={{ alignItems: "center" }}>
-            <Text style={{ fontSize: 50, color: "white" }}>
+            <Text style={{ fontSize: 30, color: "white" }}>
               {selectedstate.state?selectedstate.state:"Select State"}
             </Text>
             
@@ -91,11 +115,11 @@ const State = () => {
           <Col style={{ alignItems: "center", backgroundColor: "#dc3545", padding: 10 }}>
             <Text style={{ color: "white", fontSize: 20 }}>Deaths</Text>
             <Image source={{ uri: "https://cdn.glitch.com/20457a5a-d27c-489c-a282-348e43dc34e6%2Ficon-death.png?v=1590593297316" }} style={{ width: 30, height: 30, resizeMode: 'contain' }} />
-            <Text style={{ color: "white", fontWeight: "700", fontSize: 23 }}>{selectedstate.deaths}</Text>
+            <Text style={{ color: "white", fontWeight: "700", fontSize: 23 }}>{selectedstate.deceased}</Text>
           </Col>
         </Row>
         <Row><Col style={{ alignItems: "center" }}><Text style={{ fontSize: 30, margin: 20, color: "white" }}>District Wise Data</Text></Col></Row>
-        <Row style={{ backgroundColor: "#343a40" }}>
+        <Row style={{ backgroundColor: "#343a40" }} >
           <Col style={{ alignItems: "center", padding: 10 }}>
             <Text style={{ color: "white", fontWeight: "700" }}>District</Text>
           </Col>
@@ -104,22 +128,22 @@ const State = () => {
           <Col style={{ alignItems: "center", padding: 10 }}><Text style={{ color: "white", fontWeight: "700" }}>Deaths</Text></Col>
         </Row>
         {
-          districtwisestate.map(item => {
+          selectedstate.districtwise?selectedstate.districtwise.map(item => {
 
             return (
               <Row style={{ backgroundColor: "#343a40", borderBottomWidth: 1 }}>
 
                 <Col style={{ alignItems: "center", padding: 10 }}>
-                  <Text style={{ color: "white", textAlign: "center", fontSize: 10 }}>{item.name}</Text>
+                  <Text style={{ color: "white", textAlign: "center", fontSize: 10 }}>{item.district}</Text>
 
                 </Col>
-                <Col style={{ alignItems: "center", padding: 10 }}><Text style={{ color: "white" }}>{item.data.active>0?item.data.active:0}</Text></Col>
-                <Col style={{ alignItems: "center", padding: 10 }}><Text style={{ color: "white" }}>{item.data.confirmed>0?item.data.confirmed:0}</Text></Col>
-                <Col style={{ alignItems: "center", padding: 10 }}><Text style={{ color: "white" }}>{item.data.deceased>0?item.data.deceased:0}</Text></Col>
+                <Col style={{ alignItems: "center", padding: 10 }}><Text style={{ color: "white" }}>{item.active>0?item.active:0}</Text></Col>
+                <Col style={{ alignItems: "center", padding: 10 }}><Text style={{ color: "white" }}>{item.confirmed>0?item.confirmed:0}</Text></Col>
+                <Col style={{ alignItems: "center", padding: 10 }}><Text style={{ color: "white" }}>{item.deceased>0?item.deceased:0}</Text></Col>
               </Row>
 
             )
-          })
+          }):null
         }
       </Grid>
     </Content>
