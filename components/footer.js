@@ -7,7 +7,7 @@ const Navbar = ()=>{
     <>
       <Footer style={{backgroundColor:"white",alignItems:"center"}}>
         
-       <Text>Developed By Shashwat</Text>
+       <Text>Developed By Shashwat {'&'} Prahlad</Text>
       </Footer>
       
     </>
