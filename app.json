@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "covid-19",
-    "slug": "covid-19",
+    "name": "covid-19-App",
+    "slug": "covid-19-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/corona.png",
       "resizeMode": "contain",
-      "width":"20",
-      "height":"20",
+      "width": "20",
+      "height": "20",
       "backgroundColor": "#ffffff"
     },
     "updates": {
@@ -26,6 +26,7 @@
     },
     "android": {
       "package": "com.shashwatsahu25.covid_19"
-    }
+    },
+    "description": ""
   }
 }

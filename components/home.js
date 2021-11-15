@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState ,useCallback} from 'react';
-import { Image, Dimensions } from 'react-native'
+import { Image, Dimensions, StyleSheet } from 'react-native'
 import {
   Container, Header, Left, Body, Right,
   Button, Icon, Title, Content, Text, Grid, Col, Row,
@@ -40,16 +40,7 @@ const Home = ({ navigation }) => {
               Covid-19
             </Text>
           </Row>
-          <Row>
-            <Col>
-              <Button title="Go to Global" style={{backgroundColor:"#f50057",alignSelf:"center"}}
-                onPress={() => navigation.navigate('Global')} ><Text>Countrywise Stats</Text>
-              </Button>
-            </Col>
-            <Col>
-              <Button style={{backgroundColor:"#f50057",alignSelf:"center"}} onPress={() => navigation.navigate('State')}><Text>Indian State Stats</Text></Button>
-            </Col>
-          </Row>
+         
           <Row>
             <Col style={{ alignItems: "center" }}>
               {!isloading ? <BarChart
@@ -101,9 +92,9 @@ const Home = ({ navigation }) => {
           </Row>
           <Row>
             <Col>
-              <Text style={{ fontSize: 50, color: "#29b6f6" }}>Measures</Text>
+              <Text style={style.Measure}>Measures</Text>
               <List>
-                <ListItem style>
+                <ListItem>
                   <Text style={{ color: "white", textAlign: "justify" }}>Regularly and thoroughly clean your hands with an alcohol-based hand rub or wash them with soap and water.
               Why? Washing your hands with soap and water or using alcohol-based hand rub kills viruses that may be on your hands.</Text>
                 </ListItem>
@@ -170,3 +161,7 @@ const Home = ({ navigation }) => {
 }
 
 export default Home;
+
+const style = StyleSheet.create({
+  Measure:{ fontSize: 50, color: "#29b6f6" }
+})

@@ -32,7 +32,6 @@ const Global = () => {
     }).catch(err => {
       console.log(err)
     })
-    console.log("hello")
   }, [])
   var sum;
   const onValueChange = (value) => {

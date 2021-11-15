@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from 'react';
-import { Image, Dimensions } from 'react-native'
+import { Image, Dimensions, StyleSheet } from 'react-native'
 import {
   Container, Header, Left, Body, Right,
   Button, Icon, Title, Content, Text, Grid, Col, Row,
@@ -14,11 +14,6 @@ const State = () => {
   const [districtwise, setdistrictwise] = useState([])
   const [districtwisestate, setdistrictwisestate] = useState([])
   const [date,setDate] = useState("");
-  // useEffect(() => {
-  //   fetch('https://api.covidindiatracker.com/state_data.json').then(res => res.json()).then(data => {
-  //     stateData(data);
-  //   }).catch(err => console.log(err))
-  // }, [])
   useEffect(() => {
     fetch('https://api.covid19india.org/state_district_wise.json').then(res => res.json()).then(data => {
       console.log(Object.keys(data));
@@ -35,14 +30,6 @@ const State = () => {
     
   },[])
   const onValueChange = (value) => {
-
-    // setselectedstate(value)
-    // var distname = []
-    // Object.keys(districtwise[value.state].districtData).forEach(element => {
-    //   var res = { "name": element, "data": districtwise[value.state].districtData[element] }
-    //   distname.push(res)
-    // });
-    // setdistrictwisestate(distname)
     var districtwise = [],active=0,confirmed=0,deceased=0;
     Object.keys(data[value].districtData).forEach(district=>{
       
@@ -65,21 +52,22 @@ const State = () => {
       districtwise
     })
   }
-  return (<Container style={{ backgroundColor: "black" }}>
+  return (
+  <Container style={style.Container}>
     <Content>
       <Grid>
         <Row>
           <Col>
-            <Form style={{backgroundColor:"white"}}>
+            <Form>
               <Picker
                 mode="dropdown"
                 iosHeader="Select"
                 iosIcon={<Icon name="arrow-down" />}
-                style={{ width: undefined ,color:"black"}}
+                style={{ color:"black"}}
 
                 onValueChange={onValueChange.bind(this)}
               >
-                <Picker.Item label="Select State" enable={false} />
+                <Picker.Item label="Select State" enable={false} key={'select state'} />
                 {
                   state.map(item => {
 
@@ -131,7 +119,7 @@ const State = () => {
           selectedstate.districtwise?selectedstate.districtwise.map(item => {
 
             return (
-              <Row style={{ backgroundColor: "#343a40", borderBottomWidth: 1 }}>
+              <Row style={{ backgroundColor: "#343a40", borderBottomWidth: 1 }} key={item.district}>
 
                 <Col style={{ alignItems: "center", padding: 10 }}>
                   <Text style={{ color: "white", textAlign: "center", fontSize: 10 }}>{item.district}</Text>
@@ -151,3 +139,9 @@ const State = () => {
 }
 
 export default State;
+
+const style = StyleSheet.create({
+  Container:{
+    backgroundColor:'#282828'
+  }
+})
